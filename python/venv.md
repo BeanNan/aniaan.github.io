@@ -24,24 +24,24 @@ source <name>/bin/activate # 激活虚拟环境
 ```bash
 cd <venv_name>
 tree -L 2 # 查看目录结构
-	.
-	├── bin
-	│   ├── activate
-	│   ├── activate.csh
-	│   ├── activate.fish
-	│   ├── easy_install
-	│   ├── easy_install-3.6
-	│   ├── pip
-	│   ├── pip3
-	│   ├── pip3.6
-	│   ├── python -> /Users/beanan/.asdf/installs/python/3.6.8/bin/python
-	│   └── python3 -> python
-	├── include
-	├── lib
-	│   └── python3.6
-	└── pyvenv.cfg
+    .
+    ├── bin
+    │   ├── activate
+    │   ├── activate.csh
+    │   ├── activate.fish
+    │   ├── easy_install
+    │   ├── easy_install-3.6
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.6
+    │   ├── python -> /Users/beanan/.asdf/installs/python/3.6.8/bin/python
+    │   └── python3 -> python
+    ├── include
+    ├── lib
+    │   └── python3.6
+    └── pyvenv.cfg
 
-	4 directories, 11 files
+    4 directories, 11 files
 ```
 
 上面我们进行了一步激活虚拟的环境的操作，可以看看这个activate文件里面做了什么样的事情
@@ -70,12 +70,13 @@ which python
 ```bash
 python -c "import sys;print(sys.path)"
 output:
-	['',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python36.zip',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6/lib-dynload',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6/site-packages'
-	]
+[
+    '',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python36.zip',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6/lib-dynload',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6/site-packages'
+]
 ```
 
 虚拟环境
@@ -83,11 +84,13 @@ output:
 ```bash
 python -c "import sys;print(sys.path)"
 output:
-	['',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python36.zip',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6',
-		'/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6/lib-dynload',
-		'/Users/beanan/py_workspace/study/venv/lib/python3.6/site-packages']
+[
+    '',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python36.zip',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6',
+    '/Users/beanan/.asdf/installs/python/3.6.8/lib/python3.6/lib-dynload',
+    '/Users/beanan/py_workspace/study/venv/lib/python3.6/site-packages'
+]
 ```
 
 通过对比，我们可以发现，两者的差异在于列表的最后一位，全局环境使用的是全局的site-package，虚拟环境中使用的venv site-package，那么python是怎么做到的，答案在python的site.py文件里面，简而言之，当python解释器启动时候，解释器是知道自己当前启动的工作目录是在哪个位置，他会找父目录下有没有"pyenv.cfg"文件，如果有，添加虚拟环境的site-package， 否则添加global site-package, 具体逻辑可以看下site.py文件中的内容，site.py文件在python解释器加载的时候就会执行，改变我们的sys.path,同时sys.prefix也会改变。
